@@ -12,7 +12,9 @@ public class DataInputPanel : MonoBehaviour
     //public int[] exceptions;
     public Text listExceptions;
     public Text pollRange;
+    public Text calledIntText;
     private int _maxInteger;
+    private int _calledInteger;
     private string exceptList = "";
     
     void Start()
@@ -58,6 +60,31 @@ public class DataInputPanel : MonoBehaviour
 
             listExceptions.text = ListToText(exceptions); //print it to text
         } 
+    }
+
+    //function of calling a new number from list
+    public void CallANumber()
+    {
+        int callNum = RandomInteger();
+        var existNum = exceptions.Contains(callNum);
+        if(existNum)
+        {
+            //call a new number
+            CallANumber();
+        }
+        else
+        {
+            _calledInteger = callNum;
+            calledIntText.text = "Called: " + callNum.ToString();
+            exceptions.Add(callNum);
+            listExceptions.text = ListToText(exceptions);
+        }
+    }
+
+    int RandomInteger()
+    {
+        int calledNum = Random.Range(1, _maxInteger + 1);
+        return calledNum;
     }
 
     private string ListToText(List<int> list)
