@@ -24,12 +24,24 @@ public class UIManager : MonoBehaviour
     }
 
     [SerializeField]
-    private Text _polledNum;
+    private Text _polledNumText;
     [SerializeField]
     private GameObject _dataInputPanel;
     [SerializeField]
     private PollTube _pollTube;
+    private Animator _pollTextAnimator;
+    private DataInputPanel _dataInput;
     private bool _inputPanelSwitch = true;
+
+    private void Start()
+    {
+        _dataInput = GetComponentInChildren<DataInputPanel>();
+        if (_dataInput == null)
+            Debug.LogError("DataInputPanel is NULL or MISSING!");
+        _pollTextAnimator = GetComponent<Animator>();
+        if (_pollTextAnimator == null)
+            Debug.LogError("Poll Text Animator is NULL!");
+    }
 
     public void HideInputPanel() //button to call out the input panel
     {
@@ -37,8 +49,12 @@ public class UIManager : MonoBehaviour
         _dataInputPanel.SetActive(_inputPanelSwitch);
     }
 
-    public void PollAnimation()
+    public void PollAnimation() //poll button function
     {
-        _pollTube.PlayAnimation();
+        _dataInput.CallANumber(); //poll a new number
+        int polledNum = _dataInput.ReturnPolledNumber(); //receive number from DataInputPanel
+        _polledNumText.text = polledNum.ToString();//replace the polled num text with polled number
+        _pollTube.PlayAnimation(); //play tube animation
+        _pollTextAnimator.SetTrigger("CallText"); //play polled num animation
     }
 }

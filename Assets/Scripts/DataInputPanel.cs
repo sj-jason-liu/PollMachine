@@ -81,6 +81,11 @@ public class DataInputPanel : MonoBehaviour
         }
     }
 
+    public int ReturnPolledNumber()
+    {
+        return _calledInteger;
+    }
+
     int RandomInteger()
     {
         int calledNum = Random.Range(1, _maxInteger + 1);
