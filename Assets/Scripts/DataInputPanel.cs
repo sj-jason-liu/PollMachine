@@ -15,11 +15,9 @@ public class DataInputPanel : MonoBehaviour
     [SerializeField]
     private int _maxInteger;
     private int _calledInteger;
-    private string exceptList = "";
     
     void Start()
     {
-        //exceptions = new List<int>();
         listExceptions.text = ListToText(exceptions);
     }
 
@@ -31,7 +29,6 @@ public class DataInputPanel : MonoBehaviour
             {
                 _maxInteger = int.Parse(maxInput.text); //store the input num as int variable
                 pollRange.text = "The range is: 1 - " + _maxInteger;
-                Debug.Log("Max number is: " + _maxInteger);
             }
             else
             {
@@ -72,7 +69,7 @@ public class DataInputPanel : MonoBehaviour
 
     IEnumerator CallNewNumber()
     {
-        int callNum = RandomInteger(); //call a random integer from int function
+        int callNum = Random.Range(1, _maxInteger + 1); //call a random integer from int function
         var existNum = exceptions.Contains(callNum); //check if random one has existed in the list
         if (existNum) //if existed
         {
@@ -87,14 +84,9 @@ public class DataInputPanel : MonoBehaviour
         }
     }
 
-    //public int ReturnPolledNumber()
-    //{
-    //    return _calledInteger;
-    //}
-
-    int RandomInteger()
+    private int RandomInteger()
     {
-        int calledNum = Random.Range(1, _maxInteger + 1);
+        int calledNum = (int)Random.Range(1f, _maxInteger);
         Debug.Log("Random number is: " + calledNum);
         return calledNum;
     }

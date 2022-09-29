@@ -62,8 +62,6 @@ public class UIManager : MonoBehaviour
     public void PollAnimation() //poll button function
     {
         int polledNum = _dataInput.CallANumber(); //poll a new number
-        //Debug.Log("Polled number is: " + polledNum);
-        //int polledNum = _dataInput.ReturnPolledNumber(); //receive number from DataInputPanel
         _polledNumText.text = polledNum.ToString();//replace the polled num text with polled number
         _pollTube.PlayAnimation(); //play tube animation
         _pollTextAnimator.SetTrigger("CallText"); //play polled num animation
