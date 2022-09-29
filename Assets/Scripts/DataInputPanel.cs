@@ -28,7 +28,7 @@ public class DataInputPanel : MonoBehaviour
             if (int.Parse(maxInput.text) > 0) //if the input num is greater than 0, then it would works
             {
                 _maxInteger = int.Parse(maxInput.text); //store the input num as int variable
-                pollRange.text = "The range is: 1 - " + _maxInteger;
+                pollRange.text = "抽獎數值範圍:\n1 - " + _maxInteger;
             }
             else
             {
