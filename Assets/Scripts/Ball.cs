@@ -22,9 +22,8 @@ public class Ball : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.tag == "Speedup")
+        if (other.tag == "Speedup")
         {
-            Debug.Log("Added force");
             Vector3 direction = transform.position - other.transform.position;
             _rb.AddForceAtPosition(direction.normalized * _speed, transform.position);
         }

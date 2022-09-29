@@ -26,11 +26,10 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private Text _polledNumText;
     [SerializeField]
-    private GameObject _dataInputPanel;
-    [SerializeField]
     private PollTube _pollTube;
     private Animator _pollTextAnimator;
     private DataInputPanel _dataInput;
+    private CanvasGroup _dataInputCanvasGroup;
     private bool _inputPanelSwitch = true;
 
     private void Start()
@@ -41,18 +40,30 @@ public class UIManager : MonoBehaviour
         _pollTextAnimator = GetComponent<Animator>();
         if (_pollTextAnimator == null)
             Debug.LogError("Poll Text Animator is NULL!");
+        _dataInputCanvasGroup = GetComponentInChildren<CanvasGroup>();
+        if (_dataInputCanvasGroup == null)
+            Debug.LogError("Canvas Group of DataInputPanel is MISSING!");
     }
 
     public void HideInputPanel() //button to call out the input panel
     {
         _inputPanelSwitch = !_inputPanelSwitch;
-        _dataInputPanel.SetActive(_inputPanelSwitch);
+        switch(_inputPanelSwitch)
+        {
+            case true:
+                _dataInputCanvasGroup.alpha = 1;
+                break;
+            case false:
+                _dataInputCanvasGroup.alpha = 0;
+                break;
+        }
     }
 
     public void PollAnimation() //poll button function
     {
-        _dataInput.CallANumber(); //poll a new number
-        int polledNum = _dataInput.ReturnPolledNumber(); //receive number from DataInputPanel
+        int polledNum = _dataInput.CallANumber(); //poll a new number
+        //Debug.Log("Polled number is: " + polledNum);
+        //int polledNum = _dataInput.ReturnPolledNumber(); //receive number from DataInputPanel
         _polledNumText.text = polledNum.ToString();//replace the polled num text with polled number
         _pollTube.PlayAnimation(); //play tube animation
         _pollTextAnimator.SetTrigger("CallText"); //play polled num animation

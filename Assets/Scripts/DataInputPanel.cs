@@ -9,10 +9,10 @@ public class DataInputPanel : MonoBehaviour
     public InputField maxInput; //maximum seat number input
     public InputField exceptInput; //exception seat number input
     public List<int> exceptions; //exception list
-    //public int[] exceptions;
     public Text listExceptions;
     public Text pollRange;
     public Text calledIntText;
+    [SerializeField]
     private int _maxInteger;
     private int _calledInteger;
     private string exceptList = "";
@@ -31,6 +31,7 @@ public class DataInputPanel : MonoBehaviour
             {
                 _maxInteger = int.Parse(maxInput.text); //store the input num as int variable
                 pollRange.text = "The range is: 1 - " + _maxInteger;
+                Debug.Log("Max number is: " + _maxInteger);
             }
             else
             {
@@ -63,32 +64,38 @@ public class DataInputPanel : MonoBehaviour
     }
 
     //function of calling a new number from list
-    public void CallANumber()
+    public int CallANumber()
     {
-        int callNum = RandomInteger();
-        var existNum = exceptions.Contains(callNum);
-        if(existNum)
+        StartCoroutine(CallNewNumber());
+        return _calledInteger;
+    }
+
+    IEnumerator CallNewNumber()
+    {
+        int callNum = RandomInteger(); //call a random integer from int function
+        var existNum = exceptions.Contains(callNum); //check if random one has existed in the list
+        if (existNum) //if existed
         {
-            //call a new number
-            CallANumber();
+            yield return new WaitForEndOfFrame(); //restart coroutine to receive a new number
         }
-        else
+        else //if not
         {
             _calledInteger = callNum;
-            calledIntText.text = "Called: " + callNum.ToString();
+            //calledIntText.text = "Called: " + callNum.ToString(); 
             exceptions.Add(callNum);
             listExceptions.text = ListToText(exceptions);
         }
     }
 
-    public int ReturnPolledNumber()
-    {
-        return _calledInteger;
-    }
+    //public int ReturnPolledNumber()
+    //{
+    //    return _calledInteger;
+    //}
 
     int RandomInteger()
     {
         int calledNum = Random.Range(1, _maxInteger + 1);
+        Debug.Log("Random number is: " + calledNum);
         return calledNum;
     }
 

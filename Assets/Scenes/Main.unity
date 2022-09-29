@@ -3011,6 +3011,7 @@ MonoBehaviour:
   listExceptions: {fileID: 1035418196}
   pollRange: {fileID: 1962342287}
   calledIntText: {fileID: 1497799280}
+  _maxInteger: 0
 --- !u!114 &1677661755
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3024,7 +3025,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _polledNumText: {fileID: 2134555663}
-  _dataInputPanel: {fileID: 1962963928}
   _pollTube: {fileID: 1865676248}
 --- !u!95 &1677661756
 Animator:
@@ -3997,13 +3997,14 @@ GameObject:
   - component: {fileID: 1962963932}
   - component: {fileID: 1962963931}
   - component: {fileID: 1962963930}
+  - component: {fileID: 1962963933}
   m_Layer: 5
   m_Name: Data_Input_panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1962963929
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4038,17 +4039,18 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1962963928}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2a4e782bf6208b04b84608a4ba843ea8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxInput: {fileID: 420597919}
   exceptInput: {fileID: 1951370918}
-  exceptions: 7b000000df00000043010000
+  exceptions: 
   listExceptions: {fileID: 1035418196}
   pollRange: {fileID: 1962342287}
   calledIntText: {fileID: 1497799280}
+  _maxInteger: 0
 --- !u!114 &1962963931
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4086,6 +4088,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1962963928}
   m_CullTransparentMesh: 0
+--- !u!225 &1962963933
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1962963928}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1984267523
 GameObject:
   m_ObjectHideFlags: 0
