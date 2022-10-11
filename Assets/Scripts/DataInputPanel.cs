@@ -9,6 +9,7 @@ public class DataInputPanel : MonoBehaviour
     public InputField maxInput; //maximum seat number input
     public InputField exceptInput; //exception seat number input
     public List<int> exceptions; //exception list
+    public List<string> eduCenters;
     public Text listExceptions;
     public Text pollRange;
     public Text calledIntText;
@@ -82,6 +83,12 @@ public class DataInputPanel : MonoBehaviour
             exceptions.Add(callNum);
             listExceptions.text = ListToText(exceptions);
         }
+    }
+
+    public string CallAEduCenter() //return a random picked edu center
+    {
+        int pickedCenter = Random.Range(0, eduCenters.Count - 1);
+        return eduCenters[pickedCenter];
     }
 
     private int RandomInteger()

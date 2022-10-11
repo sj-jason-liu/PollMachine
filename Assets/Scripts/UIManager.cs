@@ -31,6 +31,7 @@ public class UIManager : MonoBehaviour
     private DataInputPanel _dataInput;
     private CanvasGroup _dataInputCanvasGroup;
     private bool _inputPanelSwitch = true;
+    private bool _isEduCenterToggleOn = false;
 
     private void Start()
     {
@@ -43,6 +44,11 @@ public class UIManager : MonoBehaviour
         _dataInputCanvasGroup = GetComponentInChildren<CanvasGroup>();
         if (_dataInputCanvasGroup == null)
             Debug.LogError("Canvas Group of DataInputPanel is MISSING!");
+    }
+
+    public void EduCenterToggleChanger()
+    {
+        _isEduCenterToggleOn = !_isEduCenterToggleOn;
     }
 
     public void HideInputPanel() //button to call out the input panel
@@ -61,8 +67,16 @@ public class UIManager : MonoBehaviour
 
     public void PollAnimation() //poll button function
     {
-        int polledNum = _dataInput.CallANumber(); //poll a new number
-        _polledNumText.text = polledNum.ToString();//replace the polled num text with polled number
+        if(!_isEduCenterToggleOn) //if not in edu center meeting mode
+        {
+            int polledNum = _dataInput.CallANumber(); //poll a new number
+            _polledNumText.text = polledNum.ToString();//replace the polled num text with polled number
+        }
+        else
+        {
+            string pickedCenter = _dataInput.CallAEduCenter(); //poll a center
+            _polledNumText.text = pickedCenter; //show text on ball
+        }
         _pollTube.PlayAnimation(); //play tube animation
         _pollTextAnimator.SetTrigger("CallText"); //play polled num animation
     }
