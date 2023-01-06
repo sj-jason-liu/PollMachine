@@ -29,8 +29,11 @@ public class UIManager : MonoBehaviour
     private PollTube _pollTube;
     private Animator _pollTextAnimator;
     private DataInputPanel _dataInput;
+    [SerializeField]
+    private GameObject _howToPanel;
     private CanvasGroup _dataInputCanvasGroup;
     private bool _inputPanelSwitch = true;
+    private bool _howToPanelSwitch = false;
     private bool _isEduCenterToggleOn = false;
 
     private void Start()
@@ -61,6 +64,20 @@ public class UIManager : MonoBehaviour
                 break;
             case false:
                 _dataInputCanvasGroup.alpha = 0;
+                break;
+        }
+    }
+
+    public void HowToPanelSwitch() //Hide/reveal How To Panel
+    {
+        _howToPanelSwitch = !_howToPanelSwitch;
+        switch(_howToPanelSwitch)
+        {
+            case true:
+                _howToPanel.SetActive(_howToPanelSwitch);
+                break;
+            case false:
+                _howToPanel.SetActive(_howToPanelSwitch);
                 break;
         }
     }
