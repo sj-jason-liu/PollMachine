@@ -61,6 +61,12 @@ public class DataInputPanel : MonoBehaviour
         } 
     }
 
+    public void ClearExceptions()
+    {
+        exceptions.Clear();
+        listExceptions.text = ListToText(exceptions); //print it to text
+    }
+
     //function of calling a new number from list
     public int CallANumber()
     {
