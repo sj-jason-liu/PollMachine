@@ -107,4 +107,17 @@ public class DataInputPanel : MonoBehaviour
         }
         return result;
     }
+
+    public void SaveList()
+    {
+        SaveSystem.SaveData(this);
+    }
+
+    public void LoadList()
+    {
+        ListData data = SaveSystem.LoadData();
+
+        exceptions = data.listData;
+        listExceptions.text = ListToText(exceptions);
+    }
 }
