@@ -116,7 +116,10 @@ public class DataInputPanel : MonoBehaviour
 
     public void SaveList()
     {
-        SaveSystem.SaveData(this);
+        if(!string.IsNullOrEmpty(listExceptions.text))
+        {
+            SaveSystem.SaveData(this);
+        }       
     }
 
     public void LoadList()
