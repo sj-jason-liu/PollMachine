@@ -8,6 +8,8 @@ public class DataInputPanel : MonoBehaviour
 {
     public InputField maxInput; //maximum seat number input
     public InputField exceptInput; //exception seat number input
+    public InputField conMinInput; //minimum of continuous number
+    public InputField conMaxInput; //maximum of continuous number
     public List<int> exceptions; //exception list
     public List<string> eduCenters;
     public Text listExceptions;
@@ -20,6 +22,14 @@ public class DataInputPanel : MonoBehaviour
     void Start()
     {
         listExceptions.text = ListToText(exceptions);
+    }
+
+    void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.KeypadEnter))
+        {
+            AddException();
+        }
     }
 
     public void SetMaximum() //set the maximum num of list
@@ -36,6 +46,34 @@ public class DataInputPanel : MonoBehaviour
                 //error text
             }
         } 
+    }
+
+    public void AddContinuousExceptions()
+    {
+        //check if both inputfield is not null and greater than 1
+        if (!string.IsNullOrEmpty(conMinInput.text) && !string.IsNullOrEmpty(conMaxInput.text)
+            && int.Parse(conMinInput.text) > 0 && int.Parse(conMaxInput.text) > 0)
+        {
+            //get several numbers from min to max by loop
+            for (int i = int.Parse(conMinInput.text); i < int.Parse(conMaxInput.text)+1; i++)
+            {
+                //add these numbers into exceptions list
+                var existInt = exceptions.Contains(i);
+
+                if(existInt)
+                {
+                    exceptions.Remove(i);
+                }
+                else
+                {
+                    exceptions.Add(i);
+                    var newList = exceptions.Distinct();
+                    exceptions = newList.ToList();
+                }
+            }
+
+            listExceptions.text = ListToText(exceptions); //print it to text
+        }
     }
 
     public void AddException() //set the exception num of list
