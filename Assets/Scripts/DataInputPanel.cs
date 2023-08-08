@@ -14,10 +14,13 @@ public class DataInputPanel : MonoBehaviour
     public List<string> eduCenters;
     public Text listExceptions;
     public Text pollRange;
-    public Text calledIntText;
-    [SerializeField]
-    private int _maxInteger;
+    //public Text calledIntText;
+    public int maxInteger;
     private int _calledInteger;
+    private int _halfInt;
+    private int _moduleNum;
+    private int _defaultListCounts; //set the default counts of list at the first poll
+    private bool _hasSetDefaultListCounts;
     
     void Start()
     {
@@ -38,8 +41,10 @@ public class DataInputPanel : MonoBehaviour
         {
             if (int.Parse(maxInput.text) > 0) //if the input num is greater than 0, then it would works
             {
-                _maxInteger = int.Parse(maxInput.text); //store the input num as int variable
-                pollRange.text = "抽獎數值範圍:\n1 - " + _maxInteger;
+                maxInteger = int.Parse(maxInput.text); //store the input num as int variable
+                _halfInt = Mathf.RoundToInt((1 + maxInteger)/2); //storage half of range
+                maxInput.text = null;
+                pollRange.text = "抽獎數值範圍:\n1 - " + maxInteger;
             }
             else
             {
@@ -108,13 +113,16 @@ public class DataInputPanel : MonoBehaviour
     //function of calling a new number from list
     public int CallANumber()
     {
+        if(!_hasSetDefaultListCounts) //set default counts at the first poll
+            _defaultListCounts = exceptions.Count;
+            _hasSetDefaultListCounts = true;
         StartCoroutine(CallNewNumber());
         return _calledInteger;
     }
 
     IEnumerator CallNewNumber()
     {
-        int callNum = Random.Range(1, _maxInteger + 1); //call a random integer from int function
+        int callNum = Random.Range(1, maxInteger + 1); //call a random integer from int function
         var existNum = exceptions.Contains(callNum); //check if random one has existed in the list
         if (existNum) //if existed
         {
@@ -127,6 +135,83 @@ public class DataInputPanel : MonoBehaviour
             exceptions.Add(callNum);
             listExceptions.text = ListToText(exceptions);
         }
+
+        /* Module
+
+        int serialCounts = exceptions.Count - _defaultListCounts;
+        if(_moduleNum != null)
+        {
+            switch(_moduleNum)
+            {
+                case 1: //1st polled greater than half
+                switch(serialCounts)
+                {
+                    case 2:
+                        
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        break;
+                }
+                    break;
+                case 2: //1st polled less or equal to half
+                switch(serialCounts)
+                {
+                    case 2:
+                        
+                        break;
+                    case 3:
+                        break;
+                    case 4:
+                        break;
+                    case 5:
+                        break;
+                }
+                    break;
+            }
+        }
+        else
+        {
+            switch(serialCounts)
+            {
+                case 0:
+                    //no number has been polled, poll a new 1
+                    int callNum = Random.Range(1, maxInteger + 1);
+                    break;
+                case 1:
+                    //the 1st has been polled
+                    int 1stPolled = exceptions[exceptions.Count - 1]; //get the last data of exceptions list
+                    if(1stPolled > _halfInt)
+                    {
+                        int callNum = Random.Range(1, _halfInt + 1);
+                        _moduleNum = 1;
+                    }
+                    else
+                    {
+                        int callNum = Random.Range(_halfInt, maxInteger + 1);
+                        _moduleNum = 2;
+                    }
+                    break;
+            }
+        }
+        
+        var existNum = exceptions.Contains(callNum); //check if random one has existed in the list
+        if (existNum) //if existed
+        {
+            yield return new WaitForEndOfFrame(); //restart coroutine to receive a new number
+        }
+        else //if not
+        {
+            _calledInteger = callNum;
+            //calledIntText.text = "Called: " + callNum.ToString(); 
+            exceptions.Add(callNum);
+            listExceptions.text = ListToText(exceptions);
+        }
+
+        */
     }
 
     public string CallAEduCenter() //return a random picked edu center
@@ -137,8 +222,8 @@ public class DataInputPanel : MonoBehaviour
 
     private int RandomInteger()
     {
-        int calledNum = (int)Random.Range(1f, _maxInteger);
-        Debug.Log("Random number is: " + calledNum);
+        int calledNum = (int)Random.Range(1f, maxInteger);
+        //Debug.Log("Random number is: " + calledNum);
         return calledNum;
     }
 
