@@ -81,6 +81,8 @@ public class DataInputPanel : MonoBehaviour
                 }
             }
 
+            conMinInput.text = null;
+            conMaxInput.text = null;
             listExceptions.text = ListToText(exceptions); //print it to text
         }
     }
@@ -104,6 +106,7 @@ public class DataInputPanel : MonoBehaviour
                 exceptions = newList.ToList(); //cover the old list with new content
             }
 
+            exceptInput.text = null;
             listExceptions.text = ListToText(exceptions); //print it to text
         } 
     }
