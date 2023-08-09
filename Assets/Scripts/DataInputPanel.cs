@@ -18,13 +18,17 @@ public class DataInputPanel : MonoBehaviour
     public int maxInteger;
     private int _calledInteger;
     private int _halfInt;
-    private int _moduleNum;
+    private int _moduleNum = 0;
+    private int callNum;
+    private int serialCounts;
     private int _defaultListCounts; //set the default counts of list at the first poll
     private bool _hasSetDefaultListCounts;
+    private bool _hasPolledFirstNum;
     
     void Start()
     {
         listExceptions.text = ListToText(exceptions);
+        serialCounts = 0;
     }
 
     void Update()
@@ -122,6 +126,7 @@ public class DataInputPanel : MonoBehaviour
 
     IEnumerator CallNewNumber()
     {
+        /*
         int callNum = Random.Range(1, maxInteger + 1); //call a random integer from int function
         var existNum = exceptions.Contains(callNum); //check if random one has existed in the list
         if (existNum) //if existed
@@ -135,41 +140,130 @@ public class DataInputPanel : MonoBehaviour
             exceptions.Add(callNum);
             listExceptions.text = ListToText(exceptions);
         }
+        */
 
-        /* Module
+        // Module
 
-        int serialCounts = exceptions.Count - _defaultListCounts;
-        if(_moduleNum != null)
+        if(_hasPolledFirstNum)
+            serialCounts++;
+        if(serialCounts > 5)
+            serialCounts -= 4;
+        //Debug.Log("Current serialCounts is: " + serialCounts);
+        if(_moduleNum == 1 || _moduleNum == 2)
         {
             switch(_moduleNum)
             {
                 case 1: //1st polled greater than half
-                switch(serialCounts)
-                {
-                    case 2:
-                        
-                        break;
-                    case 3:
-                        break;
-                    case 4:
-                        break;
-                    case 5:
-                        break;
-                }
+                    //Debug.Log("Enter Module: " + _moduleNum);
+                    switch(serialCounts)
+                    {
+                        case 2:
+                            //Debug.Log("Module: " + _moduleNum + ", case: " + serialCounts);
+                            int firstPolled = exceptions[_defaultListCounts];
+                            if((maxInteger - firstPolled) > (firstPolled - _halfInt))
+                            {
+                                callNum = Random.Range(firstPolled, maxInteger + 1);
+                            }
+                            else
+                            {
+                                callNum = Random.Range(_halfInt, firstPolled);
+                            }
+                            break;
+                        case 3:
+                            //Debug.Log("Module: " + _moduleNum + ", case: " + serialCounts);
+                            int secondPolled = exceptions[_defaultListCounts + 1];
+                            if((_halfInt - secondPolled) > (secondPolled - 1))
+                            {
+                                callNum = Random.Range(secondPolled, _halfInt + 1);
+                            }
+                            else
+                            {
+                                callNum = Random.Range(1, secondPolled);
+                            }
+                            break;
+                        case 4:
+                            //Debug.Log("Module: " + _moduleNum + ", case: " + serialCounts);
+                            int first = exceptions[_defaultListCounts];
+                            int thirdPolled = exceptions[_defaultListCounts + 2];
+                            if(first > thirdPolled)
+                            {
+                                callNum = Random.Range(first + 1, maxInteger + 1);
+                            }
+                            else
+                            {
+                                callNum = Random.Range(_halfInt + 1, first);
+                            }
+                            break;
+                        case 5:
+                            //Debug.Log("Module: " + _moduleNum + ", case: " + serialCounts);
+                            int second = exceptions[_defaultListCounts + 1];
+                            int forthPolled = exceptions[_defaultListCounts + 3];
+                            if(second > forthPolled)
+                            {
+                                callNum = Random.Range(second + 1, _halfInt + 1);
+                            }
+                            else
+                            {
+                                callNum = Random.Range(1, second);
+                            }
+                            break;
+                    }
                     break;
                 case 2: //1st polled less or equal to half
-                switch(serialCounts)
-                {
-                    case 2:
-                        
-                        break;
-                    case 3:
-                        break;
-                    case 4:
-                        break;
-                    case 5:
-                        break;
-                }
+                    //Debug.Log("Enter Module: " + _moduleNum);
+                    switch(serialCounts)
+                    {
+                        case 2:
+                            //Debug.Log("Module: " + _moduleNum + ", case: " + serialCounts);
+                            int firstPolled = exceptions[_defaultListCounts];
+                            if((_halfInt - firstPolled) > (firstPolled - 1))
+                            {
+                                callNum = Random.Range(firstPolled + 1, _halfInt + 1);
+                            }
+                            else
+                            {
+                                callNum = Random.Range(1, firstPolled);
+                            }
+                            break;
+                        case 3:
+                            //Debug.Log("Module: " + _moduleNum + ", case: " + serialCounts);
+                            int secndPolled = exceptions[_defaultListCounts];
+                            if((maxInteger - secndPolled) > (secndPolled - _halfInt))
+                            {
+                                callNum = Random.Range(secndPolled + 1, maxInteger + 1);
+                            }
+                            else
+                            {
+                                callNum = Random.Range(_halfInt, secndPolled);
+                            }
+                            break;
+                        case 4:
+                            //Debug.Log("Module: " + _moduleNum + ", case: " + serialCounts);
+                            int first = exceptions[_defaultListCounts];
+                            int thirdPolled = exceptions[_defaultListCounts + 2];
+                            if(first > thirdPolled)
+                            {
+                                callNum = Random.Range(first + 1, _halfInt + 1);
+                            }
+                            else
+                            {
+                                callNum = Random.Range(1, first);
+                            }
+                            break;
+                        case 5:
+                            //Debug.Log("Module: " + _moduleNum + ", case: " + serialCounts);
+                            int second = exceptions[_defaultListCounts + 1];
+                            int forthPolled = exceptions[_defaultListCounts + 3];
+                            if(second > forthPolled)
+                            {
+                                callNum = Random.Range(second + 1, maxInteger + 1);
+                            }
+                            else
+                            {
+                                callNum = Random.Range(_halfInt, second);
+                            }
+                            break;
+                    }
                     break;
             }
         }
@@ -179,19 +273,20 @@ public class DataInputPanel : MonoBehaviour
             {
                 case 0:
                     //no number has been polled, poll a new 1
-                    int callNum = Random.Range(1, maxInteger + 1);
+                    callNum = Random.Range(1, maxInteger + 1);
+                    _hasPolledFirstNum = true;
                     break;
                 case 1:
                     //the 1st has been polled
-                    int 1stPolled = exceptions[exceptions.Count - 1]; //get the last data of exceptions list
-                    if(1stPolled > _halfInt)
+                    int firstPolled = exceptions[exceptions.Count - 1]; //get the last data of exceptions list
+                    if(firstPolled > _halfInt)
                     {
-                        int callNum = Random.Range(1, _halfInt + 1);
+                        callNum = Random.Range(1, _halfInt + 1);
                         _moduleNum = 1;
                     }
                     else
                     {
-                        int callNum = Random.Range(_halfInt, maxInteger + 1);
+                        callNum = Random.Range(_halfInt, maxInteger + 1);
                         _moduleNum = 2;
                     }
                     break;
@@ -210,8 +305,6 @@ public class DataInputPanel : MonoBehaviour
             exceptions.Add(callNum);
             listExceptions.text = ListToText(exceptions);
         }
-
-        */
     }
 
     public string CallAEduCenter() //return a random picked edu center
