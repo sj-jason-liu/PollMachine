@@ -6,6 +6,7 @@ using System.Linq;
 
 public class DataInputPanel : MonoBehaviour
 {
+    public InputField minInput; //minimum seat number input
     public InputField maxInput; //maximum seat number input
     public InputField exceptInput; //exception seat number input
     public InputField conMinInput; //minimum of continuous number
@@ -15,6 +16,7 @@ public class DataInputPanel : MonoBehaviour
     public Text listExceptions;
     public Text pollRange;
     //public Text calledIntText;
+    public int minInteger;
     public int maxInteger;
     private int _calledInteger;
     private int _halfInt;
@@ -41,14 +43,16 @@ public class DataInputPanel : MonoBehaviour
 
     public void SetMaximum() //set the maximum num of list
     {
-        if (!string.IsNullOrEmpty(maxInput.text)) //check if the column of maximum input is null
+        if (!string.IsNullOrEmpty(maxInput.text) && !string.IsNullOrEmpty(minInput.text)) //check if the column of maximum input is null
         {
             if (int.Parse(maxInput.text) > 0) //if the input num is greater than 0, then it would works
             {
+                minInteger = int.Parse(minInput.text); //store the input num of min
                 maxInteger = int.Parse(maxInput.text); //store the input num as int variable
-                _halfInt = Mathf.RoundToInt((1 + maxInteger)/2); //storage half of range
+                //_halfInt = Mathf.RoundToInt((1 + maxInteger)/2); //storage half of range
+                minInput.text = null;
                 maxInput.text = null;
-                pollRange.text = "抽獎數值範圍:\n1 - " + maxInteger;
+                pollRange.text = "抽獎數值範圍:\n" + minInteger + " - " + maxInteger;
             }
             else
             {
@@ -129,8 +133,8 @@ public class DataInputPanel : MonoBehaviour
 
     IEnumerator CallNewNumber()
     {
-        /*
-        int callNum = Random.Range(1, maxInteger + 1); //call a random integer from int function
+        
+        int callNum = Random.Range(minInteger, maxInteger + 1); //call a random integer from int function
         var existNum = exceptions.Contains(callNum); //check if random one has existed in the list
         if (existNum) //if existed
         {
@@ -143,10 +147,11 @@ public class DataInputPanel : MonoBehaviour
             exceptions.Add(callNum);
             listExceptions.text = ListToText(exceptions);
         }
-        */
+        
 
         // Module
 
+        /*
         if(_hasPolledFirstNum)
             serialCounts++;
         if(serialCounts > 5)
@@ -295,7 +300,9 @@ public class DataInputPanel : MonoBehaviour
                     break;
             }
         }
+        */
         
+        /*
         var existNum = exceptions.Contains(callNum); //check if random one has existed in the list
         if (existNum) //if existed
         {
@@ -308,6 +315,7 @@ public class DataInputPanel : MonoBehaviour
             exceptions.Add(callNum);
             listExceptions.text = ListToText(exceptions);
         }
+        */
     }
 
     public string CallAEduCenter() //return a random picked edu center
